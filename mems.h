@@ -357,6 +357,7 @@ void *mems_get(void*v_ptr){
         }
         currentMain=currentMain->next;
     }
+    perror("\nERROR: Address Not found\n");
     return NULL;
     
 }
@@ -402,5 +403,7 @@ void mems_free(void *v_ptr){
         }
         currentMain=currentMain->next;
     }
+
+    perror("\nERROR: Virtual Address not found, Please pass a valid virtual address that was returned by mems_malloc()\n");
     
 }

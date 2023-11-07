@@ -1,0 +1,37 @@
+
+There are 2 structures for the Main list and and the subchain doubly linked list for each main node.
+
+The data structure linked list for the main chain contains the starting virtual address of the page size allocated memory using mmap and also the ending virtual address of it (virtual address is the virtual address that is returned by MeMs) and it also contains the next pointer and the subchain pointer.
+
+The subchain doubly linked list data structure contains the MeMS Virtual Address, The size of the linked list node/ the size allocated to a process/hole, a flag that keeps check if it is a hole or a process, the previous pointer and also the next pointer.
+
+The code contains globally defined variables head of the main chain and the base virtual address.
+
+mems_init(){
+	This function initializes the head and the base virtual address.
+}
+
+
+mems_finish(){
+	This function iterates through the main chain and uses munmap to free each of the subchains of the nodes of the main chain and it does proper error handling as well by checking the return value of the munmap and throwing a proper error message using perror and then it exits if there is an error with munmap return value, if there is no error then the whole allocated memory is freed and the main node head is set to NULL.
+}
+
+mems_malloc(){
+	This function first checks for the condition if the head is null or not and accordingly adds a new node to the main chain node with allocated memory in multiples of page size (depending on how much is needed) if there is no available space in any of the subchains of the main chain. If there is space available in the subchain of the main node i.e. there is a whole with size larger than the size required by the new process then it adds a new node by dividing that memory of the hole.
+}
+
+
+mems_print_stats(){
+	This function is used to print the MeMS virtual address associated with each of the main nodes and the subchain nodes and it also prints if a node of a subchain is a process or a hole and then it prints the total number of pages, Total unused space, the length of the main chain and also the length of each subchain or main chain nodes in an array format.
+}
+
+
+mems_get(){
+	This function is used to retrieve the physical address of the MeMs(virtual address returned by mmap) by passing the virtual address of the MeMS as the argument. It first typecasts the v_ptr accordingly and then iterates through the subchain nodes of the main chains until it finds the node in which the particular virtual address lies and then returns the physical address accordingly. If the address is not found then it returns NULL.
+}
+
+
+mems_free(){
+	This functions frees up the memory pointed by the virtual address. It first finds the node in the subchain corresponding to the particular virtual address and then marks it as a hole and it also combines the adjacent holes accordingly into a single hole.
+}
+
